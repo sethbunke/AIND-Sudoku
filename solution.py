@@ -100,8 +100,23 @@ def display(values):
         if r in 'CF': print(line)
     return
 
+# def eliminate1(values):
+#     solved_values = [box for box in values.keys() if len(values[box]) == 1]
+#     for box in solved_values:
+#         digit = values[box]
+#         for peer in peers[box]:
+#             prior_values = values[peer]
+#             prior_digit = (digit)
+        
+#             if len(values[peer]) > 1:
+#                 values[peer] = values[peer].replace(digit,'')
+
 def eliminate(values):
-    pass
+    for box in boxes:
+        if len(values[box]) == 1:
+            for peer in peers[box]:
+                values[peer] = values[peer].replace(values[box], '')
+    return values
 
 def only_choice(values):
     for unit in unitlist:
