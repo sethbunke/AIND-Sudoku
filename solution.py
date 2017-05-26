@@ -26,10 +26,12 @@ def naked_twins(values):
     no_more_twins = False
     while no_more_twins == False:
         board_before = values.copy()
+        #all boxes with length 2
         twins = [box for box in values.keys() if len(values[box]) == 2]
-        naked_twins = [[box1, box2] for box1 in twins 
-                       for box2 in peers[box1]
-                       if set(values[box1]) == set(values[box2])] #find a match
+        #for each twin, get peers, and add to list if they match
+        naked_twins = [[box1,box2] for box1 in twins \
+                       for box2 in peers[box1] \
+                       if set(values[box1]) == set(values[box2]) ] #find a match
         for i in range(len(naked_twins)):
             box1 = naked_twins[i][0]
             box2 = naked_twins[i][1]
@@ -65,8 +67,15 @@ row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
 unitlist = row_units + column_units + square_units
+
+unitlist.append(diagonal1)
+unitlist.append(diagonal2)
+
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
+# unitlist_diag = unitlist 
+# unitlist_diag.append(diagonal1)
+# unitlist_diag.append(diagonal2)
 
 def grid_values(grid):
     """
@@ -115,7 +124,9 @@ def eliminate(values):
     for box in boxes:
         if len(values[box]) == 1:
             for peer in peers[box]:
-                values[peer] = values[peer].replace(values[box], '')
+                #values[peer] = values[peer].replace(values[box], '')
+                new_value = values[peer].replace(values[box], '')
+                values = assign_value(values, peer, new_value)
     return values
 
 def only_choice(values):
@@ -123,14 +134,53 @@ def only_choice(values):
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
-                values[dplaces[0]] = digit
+                #values[dplaces[0]] = digit
+                values = assign_value(values, values[dplaces[0]], digit)
     return values
 
 def reduce_puzzle(values):
     pass
 
+# def reduce_puzzle(values):
+#     """
+#     Iterate eliminate() and only_choice(). If at some point, there is a box with no available values, return False.
+#     If the sudoku is solved, return the sudoku.
+#     If after an iteration of both functions, the sudoku remains the same, return the sudoku.
+#     Input: A sudoku in dictionary form.
+#     Output: The resulting sudoku in dictionary form.
+#     """
+#     solved_values = [box for box in values.keys() if len(values[box]) == 1]
+#     stalled = False
+#     while not stalled:
+#         solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
+#         values = eliminate(values)
+#         values = only_choice(values)
+#         solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
+#         stalled = solved_values_before == solved_values_after
+#         if len([box for box in values.keys() if len(values[box]) == 0]):
+#             return False
+#     return values
+
 def search(values):
     pass
+
+# def search(values):
+#     "Using depth-first search and propagation, try all possible values."
+#     # First, reduce the puzzle using the previous function
+#     values = reduce_puzzle(values)
+#     if values is False:
+#         return False ## Failed earlier
+#     if all(len(values[s]) == 1 for s in boxes): 
+#         return values ## Solved!
+#     # Choose one of the unfilled squares with the fewest possibilities
+#     n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
+#     # Now use recurrence to solve each one of the resulting sudokus, and 
+#     for value in values[s]:
+#         new_sudoku = values.copy()
+#         new_sudoku[s] = value
+#         attempt = search(new_sudoku)
+#         if attempt:
+#             return attempt
 
 def solve(grid):
     """
