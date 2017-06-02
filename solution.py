@@ -73,6 +73,7 @@ unitlist.append(diagonal2)
 
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
+
 # unitlist_diag = unitlist 
 # unitlist_diag.append(diagonal1)
 # unitlist_diag.append(diagonal2)
@@ -135,52 +136,52 @@ def only_choice(values):
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
                 #values[dplaces[0]] = digit
-                values = assign_value(values, values[dplaces[0]], digit)
+                values = assign_value(values, dplaces[0], digit)
     return values
 
+#def reduce_puzzle(values):
+#    pass
+
 def reduce_puzzle(values):
-    pass
-
-# def reduce_puzzle(values):
-#     """
-#     Iterate eliminate() and only_choice(). If at some point, there is a box with no available values, return False.
-#     If the sudoku is solved, return the sudoku.
-#     If after an iteration of both functions, the sudoku remains the same, return the sudoku.
-#     Input: A sudoku in dictionary form.
-#     Output: The resulting sudoku in dictionary form.
-#     """
-#     solved_values = [box for box in values.keys() if len(values[box]) == 1]
-#     stalled = False
-#     while not stalled:
-#         solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
-#         values = eliminate(values)
-#         values = only_choice(values)
-#         solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
-#         stalled = solved_values_before == solved_values_after
-#         if len([box for box in values.keys() if len(values[box]) == 0]):
-#             return False
-#     return values
-
-def search(values):
-    pass
+    """
+    Iterate eliminate() and only_choice(). If at some point, there is a box with no available values, return False.
+    If the sudoku is solved, return the sudoku.
+    If after an iteration of both functions, the sudoku remains the same, return the sudoku.
+    Input: A sudoku in dictionary form.
+    Output: The resulting sudoku in dictionary form.
+    """
+    solved_values = [box for box in values.keys() if len(values[box]) == 1]
+    stalled = False
+    while not stalled:
+        solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
+        values = eliminate(values)
+        values = only_choice(values)
+        solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
+        stalled = solved_values_before == solved_values_after
+        if len([box for box in values.keys() if len(values[box]) == 0]):
+            return False
+    return values
 
 # def search(values):
-#     "Using depth-first search and propagation, try all possible values."
-#     # First, reduce the puzzle using the previous function
-#     values = reduce_puzzle(values)
-#     if values is False:
-#         return False ## Failed earlier
-#     if all(len(values[s]) == 1 for s in boxes): 
-#         return values ## Solved!
-#     # Choose one of the unfilled squares with the fewest possibilities
-#     n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
-#     # Now use recurrence to solve each one of the resulting sudokus, and 
-#     for value in values[s]:
-#         new_sudoku = values.copy()
-#         new_sudoku[s] = value
-#         attempt = search(new_sudoku)
-#         if attempt:
-#             return attempt
+#     pass
+
+def search(values):
+    "Using depth-first search and propagation, try all possible values."
+    # First, reduce the puzzle using the previous function
+    values = reduce_puzzle(values)
+    if values is False:
+        return False ## Failed earlier
+    if all(len(values[s]) == 1 for s in boxes): 
+        return values ## Solved!
+    # Choose one of the unfilled squares with the fewest possibilities
+    n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
+    # Now use recurrence to solve each one of the resulting sudokus, and 
+    for value in values[s]:
+        new_sudoku = values.copy()
+        new_sudoku[s] = value
+        attempt = search(new_sudoku)
+        if attempt:
+            return attempt
 
 def solve(grid):
     """
@@ -189,8 +190,13 @@ def solve(grid):
         grid(string): a string representing a sudoku grid.
             Example: '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
     Returns:
-        The dictionary representation of the final sudoku grid. False if no solution exists.
+        The dictionary representation of the final sudoku grid. False if no solution exists.        
     """
+    values_dict = grid_values(grid)
+    result = search(values_dict)
+    return result
+
+
 
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'

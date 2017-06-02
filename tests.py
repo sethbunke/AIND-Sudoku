@@ -20,11 +20,13 @@ test_grid = solution.grid_values(test_diagonal_grid)
 
 def test():
     test_diagonal_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+    #Populate
     test_grid = solution.grid_values(test_diagonal_grid)
     solution.display(test_grid)
 
     print('******************')
 
+    #If a single value, remove from all peers
     elim1 = solution.eliminate(test_grid)
     solution.display(elim1)
 
@@ -56,6 +58,12 @@ def dia_peers_test():
 
     #print(len(solution.unitlist_diag))
 
+def show_peers(key):
+    print(len(solution.peers[key]))
+    print(solution.peers[key])
+    print(sorted(solution.peers[key]))
 
 
-test()
+#test()
+
+#peers has diagonals in it
