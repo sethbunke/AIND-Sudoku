@@ -24,7 +24,7 @@ def assign_value(values, box, value):
 def naked_twins(values):
     no_more_twins = False
     while no_more_twins is False:
-        board_before = values.copy()
+        board_before = values
         #all boxes with length 2
         twins = [box for box in values.keys() if len(values[box]) == 2]
         #for each twin, get peers, and add to list if they match
@@ -37,7 +37,7 @@ def naked_twins(values):
             common_peers = sorted(list(set(naked_peers[twin1] & naked_peers[twin2])))
             for peer in common_peers:
                 len_values = len(values[peer])
-                if len_values > 2:
+                if len_values > 1: 
                     for digit in values[twin1]:
                         #values[peer] = values[peer].replace(digit, '')
                         values = assign_value(values, peer, values[peer].replace(digit, ''))
