@@ -3,11 +3,20 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: For naked twins we are using constraint propagation by leveraging the fact that a number can only
+appear once among peer boxes. When we have two peer boxes that contain only the same two integers we
+know that we can remove those integers from the peers that those two boxes share. Basically, we are using
+the rule (constraint) of one integer per box of peers to reduce the quantity of the possible integers
+for boxes which facilitates arriving at a solution.  
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: In much the same way as naked twins, by utilizing the rule (constraint) of one integer per box in a 
+group of peers, we are able to identify boxes with only one integer then get their peers (including their
+diagonal peers in this case) and remove those single integers from their peers - as we know those integers can 
+only appear once. This is very similar to applying a "safe move" with a "greedy" algorithm - based on this
+rule we can be certain that is it safe to to remove these integers from their peers, thus reducing the 
+complexity of solving the overall puzzle. 
 
 ### Install
 

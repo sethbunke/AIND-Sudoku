@@ -42,72 +42,9 @@ def naked_twins(values):
                         #values[peer] = values[peer].replace(digit, '')
                         values = assign_value(values, peer, values[peer].replace(digit, ''))
 
-
-        # for i in range(len(naked_twins)):
-        #     box1 = naked_twins[i][0]
-        #     box2 = naked_twins[i][1]
-        #     allpeers = set(naked_peers[box1]) & set(naked_peers[box2])
-        #     for apeer in allpeers:
-        #         if len(set(values[apeer])) > 2:
-        #             print('peer: ' + apeer + ' start values: ' +  values[apeer] + ' removing: ' + values[box1])
-        #             for num in values[box1]:
-        #                 values = assign_value(values, apeer,
-        #                                       values[apeer].replace(num, ''))
-        #             print('peer: ' + apeer + ' end values: ' +  values[apeer]) 
         if board_before == values: #what is this? 
             no_more_twins = True
     return values
-
-
-#NOT WORKING
-# def naked_twins(values):
-#     no_more_twins = False
-#     while no_more_twins == False:
-#         board_before = values.copy()
-#         #all boxes with length 2
-#         twins = [box for box in values.keys() if len(values[box]) == 2]
-#         #for each twin, get peers, and add to list if they match
-#         naked_twins = [[box1,box2] for box1 in twins \
-#                        for box2 in naked_peers[box1] \
-#                        if set(values[box1]) == set(values[box2]) ] #find a match
-#         for i in range(len(naked_twins)):
-#             box1 = naked_twins[i][0]
-#             box2 = naked_twins[i][1]
-#             allpeers = set(naked_peers[box1]) & set(naked_peers[box2])
-#             for apeer in allpeers:
-#                 if len(set(values[apeer])) > 2:
-#                     print('peer: ' + apeer + ' start values: ' +  values[apeer] + ' removing: ' + values[box1])
-#                     for num in values[box1]:
-#                         values = assign_value(values, apeer,
-#                                               values[apeer].replace(num, ''))
-#                     print('peer: ' + apeer + ' end values: ' +  values[apeer]) 
-#         if board_before == values: #what is this? 
-#             no_more_twins = True
-#     return values
-
-#initial - passes local unit test, fails server/submission tests
-# def naked_twins(values):
-#     no_more_twins = False
-#     while no_more_twins == False:
-#         board_before = values.copy()
-#         #all boxes with length 2
-#         twins = [box for box in values.keys() if len(values[box]) == 2]
-#         #for each twin, get peers, and add to list if they match
-#         naked_twins = [[box1,box2] for box1 in twins \
-#                        for box2 in peers[box1] \
-#                        if set(values[box1]) == set(values[box2]) ] #find a match
-#         for i in range(len(naked_twins)):
-#             box1 = naked_twins[i][0]
-#             box2 = naked_twins[i][1]
-#             allpeers = set(peers[box1]) & set(peers[box2])
-#             for apeer in allpeers:
-#                 if len(set(values[apeer])) > 2:
-#                     for num in values[box1]:
-#                         values = assign_value(values, apeer,
-#                                               values[apeer].replace(num, ''))
-#         if board_before == values:
-#             no_more_twins = True
-#     return values
 
 def naked_twins_ORIG(values):
     """Eliminate values using the naked twins strategy.
